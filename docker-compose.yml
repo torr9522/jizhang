@@ -1,6 +1,6 @@
 services:
   subdux:
-    image: ghcr.io/kasuha07/subdux:${SUBDUX_VERSION:-stable}
+    image: ghcr.io/torr9522/jizhang:${SUBDUX_VERSION:-jizhang-v0.33.0-1}
     container_name: subdux
     ports:
       - "${SUBDUX_HOST_PORT:-8080}:8080"

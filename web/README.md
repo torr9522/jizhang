@@ -1,6 +1,6 @@
-# Subdux Frontend
+# jizhang Frontend
 
-Subdux 前端基于 React 19 + Vite + TypeScript，构建产物会打包为 SPA，并在主项目构建阶段嵌入后端二进制中。
+jizhang 前端基于 React 19 + Vite + TypeScript，构建产物会打包为 SPA，并在主项目构建阶段嵌入后端二进制中。
 
 > 完整项目说明（后端、部署、Docker、环境变量）请查看根目录 [`README.md`](../README.md)。
 

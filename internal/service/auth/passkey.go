@@ -462,7 +462,7 @@ func (s *Service) buildWebAuthn(origin string, host string, scheme string) (*web
 		siteName = ""
 	}
 	if siteName == "" {
-		siteName = "Subdux"
+		siteName = "jizhang"
 	}
 
 	siteURLRaw, err := getSystemSettingString(context.Background(), s.DB, "site_url", "")

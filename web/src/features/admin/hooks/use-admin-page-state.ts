@@ -565,7 +565,7 @@ export function useAdminPageState({ t }: UseAdminPageStateOptions): UseAdminPage
       anchor.href = url
       let filename =
         parseFilenameFromContentDisposition(res.headers.get("content-disposition")) ??
-        `subdux-backup-${new Date().toISOString().split("T")[0]}${includeAssetsInBackup || encrypted ? ".zip" : ".db"}`
+        `jizhang-backup-${new Date().toISOString().split("T")[0]}${includeAssetsInBackup || encrypted ? ".zip" : ".db"}`
       // Encrypted archives are always zip containers.
       if (encrypted && !filename.toLowerCase().endsWith(".zip")) {
         filename = `${filename.replace(/\.[^./\\]+$/, "")}.zip`

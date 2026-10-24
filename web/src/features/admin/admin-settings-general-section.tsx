@@ -36,7 +36,7 @@ export default function AdminSettingsGeneralSection({
           id="site-name"
           value={siteName}
           onChange={(event) => onSiteNameChange(event.target.value)}
-          placeholder="Subdux"
+          placeholder="jizhang"
         />
         <p className="text-xs text-muted-foreground">{t("admin.settings.siteNameDescription")}</p>
       </div>

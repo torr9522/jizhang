@@ -145,7 +145,7 @@ func (s *Service) GenerateICalFeed(userID uint) (string, error) {
 	sb.WriteString("BEGIN:VCALENDAR" + crlf)
 	sb.WriteString("VERSION:2.0" + crlf)
 	sb.WriteString("PRODID:-//Subdux//Calendar//EN" + crlf)
-	sb.WriteString(icalFold("X-WR-CALNAME:Subdux Subscriptions") + crlf)
+	sb.WriteString(icalFold("X-WR-CALNAME:jizhang Subscriptions") + crlf)
 	sb.WriteString("CALSCALE:GREGORIAN" + crlf)
 	sb.WriteString("METHOD:PUBLISH" + crlf)
 

@@ -19,5 +19,5 @@ export function useSiteTitle() {
 }
 
 export function updateSiteTitle(siteName: string) {
-  document.title = siteName || "Subdux"
+  document.title = siteName || "jizhang"
 }

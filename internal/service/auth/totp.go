@@ -78,7 +78,7 @@ func (s *TOTPService) BeginSetup(userID uint) (*TotpSetupResult, error) {
 	}
 
 	key, err := totp.Generate(totp.GenerateOpts{
-		Issuer:      "Subdux",
+		Issuer:      "jizhang",
 		AccountName: user.Email,
 	})
 	if err != nil {

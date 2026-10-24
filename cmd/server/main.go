@@ -207,7 +207,7 @@ func bootstrapInitialAdmin(db *gorm.DB) {
 // redacted or filtered by log level.
 func writeInitialAdminPassword(password string) {
 	fmt.Println("================================================================")
-	fmt.Println("Subdux initial admin password (shown only once, store it now):")
+	fmt.Println("jizhang initial admin password (shown only once, store it now):")
 	fmt.Printf("  %s\n", password)
 	fmt.Println("================================================================")
 }

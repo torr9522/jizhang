@@ -260,7 +260,7 @@ func (s *Service) sendBark(channel model.NotificationChannel, message string) er
 	payload := map[string]interface{}{
 		"title": "Subscription Reminder",
 		"body":  message,
-		"group": "Subdux",
+		"group": "jizhang",
 	}
 
 	body, err := json.Marshal(payload)

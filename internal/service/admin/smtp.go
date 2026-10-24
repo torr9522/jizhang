@@ -40,8 +40,8 @@ func (s *Service) SendSMTPTestEmail(userID uint, recipientOverride string) error
 		return serviceerr.New(serviceerr.KindInvalid, "invalid_recipient_email", "invalid recipient email")
 	}
 
-	subject := "Subdux SMTP Test"
-	body := fmt.Sprintf("This is a test email from Subdux.\r\nSent at: %s", pkg.Now().Format(time.RFC3339))
+	subject := "jizhang SMTP Test"
+	body := fmt.Sprintf("This is a test email from jizhang.\r\nSent at: %s", pkg.Now().Format(time.RFC3339))
 	message := servicesmtp.BuildMessage(cfg.FromEmail, cfg.FromName, recipient, subject, body)
 
 	if err := servicesmtp.Send(*cfg, recipient, message); err != nil {

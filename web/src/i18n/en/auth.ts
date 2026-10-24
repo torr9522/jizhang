@@ -1,6 +1,6 @@
 const auth = {
   "login": {
-    "title": "Subdux",
+    "title": "jizhang",
     "description": "Sign in to manage your subscriptions",
     "identifierLabel": "Username or Email",
     "identifierPlaceholder": "username or you@example.com",

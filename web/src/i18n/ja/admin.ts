@@ -125,7 +125,7 @@ const admin = {
     smtpFromEmail: "送信元メール",
     smtpFromEmailPlaceholder: "no-reply@example.com",
     smtpFromName: "送信者名",
-    smtpFromNamePlaceholder: "Subdux",
+    smtpFromNamePlaceholder: "jizhang",
     smtpAdvancedTitle: "SMTP詳細設定",
     smtpAdvancedDescription:
       "任意設定です。プロバイダー指定がなければ既定値のままにしてください。",

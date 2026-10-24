@@ -66,7 +66,7 @@ export function useSettingsAccountTransfer(): UseSettingsAccountTransferResult {
       })
       const blob = await res.blob()
       const disposition = res.headers.get("Content-Disposition")
-      let filename = "subdux-export.json"
+      let filename = "jizhang-export.json"
       if (disposition) {
         const match = disposition.match(/filename="?([^"]+)"?/)
         if (match) filename = match[1]

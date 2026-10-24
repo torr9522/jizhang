@@ -40,7 +40,7 @@ var DefaultSystemSettings = []model.SystemSetting{
 	{Key: "registration_enabled", Value: "false"},
 	{Key: "registration_email_verification_enabled", Value: "false"},
 	{Key: "email_domain_whitelist", Value: ""},
-	{Key: "site_name", Value: "Subdux"},
+	{Key: "site_name", Value: "jizhang"},
 	{Key: "site_url", Value: ""},
 	{Key: "currencyapi_key", Value: ""},
 	{Key: "exchange_rate_source", Value: "auto"},
@@ -103,12 +103,12 @@ func (s *Service) SeedDefaults() error {
 }
 
 func (s *Service) GetSiteInfo() (*SiteInfo, error) {
-	siteName, err := GetString(context.Background(), s.DB, "site_name", "Subdux")
+	siteName, err := GetString(context.Background(), s.DB, "site_name", "jizhang")
 	if err != nil {
 		return nil, err
 	}
 	if siteName == "" {
-		siteName = "Subdux"
+		siteName = "jizhang"
 	}
 
 	mcpEnabled, err := GetBool(context.Background(), s.DB, "mcp_enabled", false)

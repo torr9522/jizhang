@@ -129,7 +129,7 @@ const admin = {
     smtpFromEmail: "From Email",
     smtpFromEmailPlaceholder: "no-reply@example.com",
     smtpFromName: "From Name",
-    smtpFromNamePlaceholder: "Subdux",
+    smtpFromNamePlaceholder: "jizhang",
     smtpAdvancedTitle: "Advanced SMTP Settings",
     smtpAdvancedDescription:
       "Optional settings. Keep defaults unless your provider requires changes.",

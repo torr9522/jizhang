@@ -21,7 +21,7 @@ func defaultAdminSystemSettings() *SystemSettings {
 		RegistrationEnabled:                  false,
 		RegistrationEmailVerificationEnabled: false,
 		EmailDomainWhitelist:                 "",
-		SiteName:                             "Subdux",
+		SiteName:                             "jizhang",
 		SiteURL:                              "",
 		CurrencyAPIKeySet:                    false,
 		ExchangeRateSource:                   "auto",

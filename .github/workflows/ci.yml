@@ -29,7 +29,8 @@ jobs:
 
       - name: Check Go formatting
         run: |
-          files=$(gofmt -l $(find . -path ./web -prune -o -name '*.go' -print))
+          mapfile -t go_files < <(find . -path ./web -prune -o -name '*.go' -print)
+          files=$(gofmt -l "${go_files[@]}")
           if [ -n "$files" ]; then
             echo "Go files are not gofmt-formatted:"
             echo "$files"
@@ -54,9 +55,9 @@ jobs:
       - name: Build backend
         run: |
           go build -ldflags="-s -w \
-            -X github.com/shiroha/subdux/internal/version.Version=${{ github.sha }} \
-            -X github.com/shiroha/subdux/internal/version.Commit=$(echo ${{ github.sha }} | cut -c1-7) \
-            -X github.com/shiroha/subdux/internal/version.BuildDate=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            -X github.com/kasuha07/subdux/internal/version.Version=${{ github.sha }} \
+            -X github.com/kasuha07/subdux/internal/version.Commit=$(echo ${{ github.sha }} | cut -c1-7) \
+            -X github.com/kasuha07/subdux/internal/version.BuildDate=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             -o subdux ./cmd/server
 
       - name: Test backend

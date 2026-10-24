@@ -30,8 +30,8 @@ FROM gcr.io/distroless/static-debian12
 ARG VERSION=dev
 ARG COMMIT=unknown
 ARG BUILD_DATE=unknown
-ARG REPOSITORY_URL=https://github.com/kasuha07/subdux
-LABEL org.opencontainers.image.title="Subdux" \
+ARG REPOSITORY_URL=https://github.com/torr9522/jizhang
+LABEL org.opencontainers.image.title="jizhang" \
       org.opencontainers.image.description="Self-hosted subscription tracker with notifications, multi-currency, and modern auth." \
       org.opencontainers.image.source="${REPOSITORY_URL}" \
       org.opencontainers.image.url="${REPOSITORY_URL}" \

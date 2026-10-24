@@ -111,7 +111,7 @@ func (h *MCPOAuthHandler) ResourceMetadata(c echo.Context) error {
 	return c.JSON(http.StatusOK, echo.Map{
 		"resource": issuer + "/mcp", "authorization_servers": []string{issuer},
 		"scopes_supported": []string{"read"}, "bearer_methods_supported": []string{"header"},
-		"resource_name": "Subdux MCP",
+		"resource_name": "jizhang MCP",
 	})
 }
 

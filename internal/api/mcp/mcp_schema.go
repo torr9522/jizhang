@@ -201,7 +201,7 @@ func (h *MCPHandler) buildServer() *mcpsdk.Server {
 	server := mcpsdk.NewServer(
 		&mcpsdk.Implementation{
 			Name:    "subdux",
-			Title:   "Subdux",
+			Title:   "jizhang",
 			Version: info.Version,
 		},
 		&mcpsdk.ServerOptions{

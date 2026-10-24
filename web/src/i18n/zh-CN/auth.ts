@@ -1,6 +1,6 @@
 const auth = {
   "login": {
-    "title": "Subdux",
+    "title": "jizhang",
     "description": "登录以管理您的订阅",
     "identifierLabel": "用户名或邮箱",
     "identifierPlaceholder": "用户名或 you@example.com",

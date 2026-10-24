@@ -1,5 +1,5 @@
 const dashboard = {
-  "title": "Subdux",
+  "title": "jizhang",
   "add": "追加",
   "loading": "読み込み中...",
   "stats": {

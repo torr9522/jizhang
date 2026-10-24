@@ -439,18 +439,18 @@ func (s *Service) sendVerificationCodeEmail(recipient string, purpose string, co
 	}
 
 	expiresMinutes := int(verificationCodeTTL / time.Minute)
-	subject := "Subdux verification code"
+	subject := "jizhang verification code"
 	body := fmt.Sprintf("Your verification code is: %s\r\nThis code expires in %d minutes.", code, expiresMinutes)
 
 	switch purpose {
 	case verificationPurposeRegister:
-		subject = "Subdux registration verification code"
+		subject = "jizhang registration verification code"
 		body = fmt.Sprintf("Use this code to complete your registration: %s\r\nThis code expires in %d minutes.", code, expiresMinutes)
 	case verificationPurposePasswordReset:
-		subject = "Subdux password reset code"
+		subject = "jizhang password reset code"
 		body = fmt.Sprintf("Use this code to reset your password: %s\r\nThis code expires in %d minutes.\r\nIf you did not request this, you can ignore this email.", code, expiresMinutes)
 	case verificationPurposeChangeEmail:
-		subject = "Subdux email change code"
+		subject = "jizhang email change code"
 		body = fmt.Sprintf("Use this code to confirm your new email address: %s\r\nThis code expires in %d minutes.\r\nIf you did not request this, you can ignore this email.", code, expiresMinutes)
 	}
 

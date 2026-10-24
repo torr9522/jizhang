@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { api } from "@/lib/api"
 import type { VersionInfo } from "@/types"
 
-const githubRepoURL = "https://github.com/kasuha07/subdux"
+const githubRepoURL = "https://github.com/torr9522/jizhang"
 
 interface SettingsAboutTabProps {
   versionInfo: VersionInfo | null

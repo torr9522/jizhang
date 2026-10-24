@@ -160,7 +160,7 @@ export function createAdminSettingsForm(settings?: SystemSettings): AdminSetting
     registrationEmailVerificationEnabled:
       settings?.registration_email_verification_enabled ?? false,
     registrationEnabled: settings?.registration_enabled ?? false,
-    siteName: settings?.site_name || "Subdux",
+    siteName: settings?.site_name || "jizhang",
     siteUrl: settings?.site_url || "",
     smtpAuthMethod: settings?.smtp_auth_method || "auto",
     smtpEnabled: settings?.smtp_enabled ?? false,

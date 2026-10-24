@@ -114,7 +114,7 @@ const admin = {
     smtpFromEmail: "发件邮箱",
     smtpFromEmailPlaceholder: "no-reply@example.com",
     smtpFromName: "发件人名称",
-    smtpFromNamePlaceholder: "Subdux",
+    smtpFromNamePlaceholder: "jizhang",
     smtpAdvancedTitle: "SMTP 高级设置",
     smtpAdvancedDescription: "可选项。除非服务商要求，否则建议保持默认值。",
     smtpEncryption: "加密方式",

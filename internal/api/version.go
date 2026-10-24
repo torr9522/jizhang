@@ -31,7 +31,7 @@ func (h *VersionHandler) Get(c echo.Context) error {
 func (h *VersionHandler) GetLatest(c echo.Context) error {
 	client := serviceoutbound.NewOutboundHTTPClient(h.db, 10*time.Second)
 	req, err := http.NewRequestWithContext(c.Request().Context(), http.MethodGet,
-		"https://api.github.com/repos/kasuha07/subdux/releases/latest", nil)
+		"https://api.github.com/repos/torr9522/jizhang/releases/latest", nil)
 	if err != nil {
 		return httpx.WriteError(c, http.StatusInternalServerError, "failed_to_create_request")
 	}

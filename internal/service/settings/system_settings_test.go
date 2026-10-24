@@ -82,8 +82,8 @@ func TestSystemSettingsServiceGetSiteInfo(t *testing.T) {
 	if err != nil {
 		t.Fatalf("GetSiteInfo() error = %v", err)
 	}
-	if siteInfo.SiteName != "Subdux" {
-		t.Fatalf("SiteName = %q, want Subdux", siteInfo.SiteName)
+	if siteInfo.SiteName != "jizhang" {
+		t.Fatalf("SiteName = %q, want jizhang", siteInfo.SiteName)
 	}
 	if siteInfo.MCPEnabled {
 		t.Fatal("MCPEnabled = true, want false")

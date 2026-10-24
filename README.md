@@ -1,11 +1,11 @@
-# Subdux
+# jizhang
 
-[![CI](https://github.com/kasuha07/subdux/actions/workflows/ci.yml/badge.svg)](https://github.com/kasuha07/subdux/actions/workflows/ci.yml)
-[![GHCR](https://img.shields.io/badge/GHCR-ghcr.io%2Fkasuha07%2Fsubdux-2ea44f?logo=docker)](https://github.com/kasuha07/subdux/pkgs/container/subdux)
+[![CI](https://github.com/torr9522/jizhang/actions/workflows/ci.yml/badge.svg)](https://github.com/torr9522/jizhang/actions/workflows/ci.yml)
+[![GHCR](https://img.shields.io/badge/GHCR-ghcr.io%2Ftorr9522%2Fjizhang-2ea44f?logo=docker)](https://github.com/torr9522/jizhang/pkgs/container/jizhang)
 [![License: GPL-3.0-or-later](https://img.shields.io/badge/License-GPL--3.0--or--later-blue.svg)](LICENSE)
 
 <p align="center">
-  <img src="web/public/subdux-logo.svg" alt="Subdux" width="320">
+  <img src="web/public/subdux-logo.svg" alt="jizhang" width="320">
 </p>
 
 <p align="center">
@@ -20,13 +20,18 @@
 <p align="center">
   <a href="#quick-start"><strong>Get started</strong></a> ·
   <a href="#automation-and-mcp">Connect an agent</a> ·
-  <a href="#what-subdux-gives-you">Explore the product</a> ·
+  <a href="#what-jizhang-gives-you">Explore the product</a> ·
   <a href="docs/README.zh-CN.md">简体中文</a>
 </p>
 
 ---
 
-Subdux turns recurring subscription charges scattered across different services into a clear, actionable timeline. See when the next charge is due, understand the real cost across currencies, and decide whether to renew or cancel before the bill arrives.
+> This repository is the personal-maintained **jizhang** project, based initially on
+> upstream `v0.33.0`. Development and releases are maintained at
+> [`torr9522/jizhang`](https://github.com/torr9522/jizhang). See
+> [`UPSTREAM.md`](UPSTREAM.md) for the exact upstream baseline and update policy.
+
+jizhang turns recurring subscription charges scattered across different services into a clear, actionable timeline. See when the next charge is due, understand the real cost across currencies, and decide whether to renew or cancel before the bill arrives.
 
 It ships as a single binary and deploys with one Docker command. Your subscription records and notification settings stay on your own infrastructure.
 
@@ -35,41 +40,41 @@ It ships as a single binary and deploys with one Docker command. Your subscripti
 <table>
   <tr>
     <td width="33.33%" align="center">
-      <img src="docs/screenshots/dashboard.png" alt="Subdux dashboard">
+      <img src="docs/screenshots/dashboard.png" alt="jizhang dashboard">
       <br>
       <strong>Dashboard</strong>
     </td>
     <td width="33.33%" align="center">
-      <img src="docs/screenshots/action_center.png" alt="Subdux action center">
+      <img src="docs/screenshots/action_center.png" alt="jizhang action center">
       <br>
       <strong>Action Center</strong>
     </td>
     <td width="33.33%" align="center">
-      <img src="docs/screenshots/reports.png" alt="Subdux reports">
+      <img src="docs/screenshots/reports.png" alt="jizhang reports">
       <br>
       <strong>Reports</strong>
     </td>
   </tr>
   <tr>
     <td width="33.33%" align="center">
-      <img src="docs/screenshots/notification_settings.png" alt="Subdux notification settings">
+      <img src="docs/screenshots/notification_settings.png" alt="jizhang notification settings">
       <br>
       <strong>Notification Settings</strong>
     </td>
     <td width="33.33%" align="center">
-      <img src="docs/screenshots/calendar_view.png" alt="Subdux calendar view">
+      <img src="docs/screenshots/calendar_view.png" alt="jizhang calendar view">
       <br>
       <strong>Calendar View</strong>
     </td>
     <td width="33.33%" align="center">
-      <img src="docs/screenshots/subscription_detail.png" alt="Subdux subscription details">
+      <img src="docs/screenshots/subscription_detail.png" alt="jizhang subscription details">
       <br>
       <strong>Subscription Details</strong>
     </td>
   </tr>
 </table>
 
-## Why Subdux
+## Why jizhang
 
 - **Lightweight deployment.** The frontend, backend, and background jobs are integrated into a single Go binary. SQLite is used by default; PostgreSQL is available for deployments that configure `DATABASE_URL`.
 - **Built around renewal decisions, not just subscription records.** The action center brings pending items together, while renewal and change history preserve what happened after each decision.
@@ -81,32 +86,32 @@ It ships as a single binary and deploys with one Docker command. Your subscripti
 
 ### Docker CLI
 
-Download [`.env.example`](.env.example) as `subdux.env`, then generate stable random values for `JWT_SECRET` and `SETTINGS_ENCRYPTION_KEY`:
+Download [`.env.example`](.env.example) as `jizhang.env`, then generate stable random values for `JWT_SECRET` and `SETTINGS_ENCRYPTION_KEY`:
 
 ```bash
 curl -fsSL \
-  "https://raw.githubusercontent.com/kasuha07/subdux/main/.env.example" \
-  -o subdux.env
-chmod 600 subdux.env
+  "https://raw.githubusercontent.com/torr9522/jizhang/main/.env.example" \
+  -o jizhang.env
+chmod 600 jizhang.env
 sed -i \
   -e "s|^JWT_SECRET=.*$|JWT_SECRET=$(openssl rand -hex 32)|" \
   -e "s|^SETTINGS_ENCRYPTION_KEY=.*$|SETTINGS_ENCRYPTION_KEY=$(openssl rand -hex 32)|" \
-  subdux.env
+  jizhang.env
 mkdir -p data
 
 docker run -d \
   --name subdux \
   --restart unless-stopped \
   -p 8080:8080 \
-  --env-file ./subdux.env \
+  --env-file ./jizhang.env \
   -e DATA_PATH=/data \
   -v "$(pwd)/data:/data" \
-  ghcr.io/kasuha07/subdux:stable
+  ghcr.io/torr9522/jizhang:jizhang-v0.33.0-1
 ```
 
 After the container is running, open <http://localhost:8080>.
 
-On a fresh instance, Subdux automatically creates the initial administrator and prints a random password only during the first initialization:
+On a fresh instance, jizhang automatically creates the initial administrator and prints a random password only during the first initialization:
 
 ```bash
 docker logs subdux
@@ -117,7 +122,7 @@ Default initial administrator:
 - Username: `admin`
 - Email: `admin@subdux.local`
 
-To choose the initial credentials yourself, edit `SUBDUX_INITIAL_ADMIN_USERNAME`, `SUBDUX_INITIAL_ADMIN_EMAIL`, and `SUBDUX_INITIAL_ADMIN_PASSWORD` in `subdux.env` before the first startup. Public registration is disabled by default and can be enabled in the admin settings after signing in.
+To choose the initial credentials yourself, edit `SUBDUX_INITIAL_ADMIN_USERNAME`, `SUBDUX_INITIAL_ADMIN_EMAIL`, and `SUBDUX_INITIAL_ADMIN_PASSWORD` in `jizhang.env` before the first startup. Public registration is disabled by default and can be enabled in the admin settings after signing in.
 
 ### Docker Compose
 
@@ -125,9 +130,9 @@ Download the Compose file and environment template, generate stable secrets for 
 
 ```bash
 curl -fsSLO \
-  "https://raw.githubusercontent.com/kasuha07/subdux/main/docker-compose.yml"
+  "https://raw.githubusercontent.com/torr9522/jizhang/main/docker-compose.yml"
 curl -fsSL \
-  "https://raw.githubusercontent.com/kasuha07/subdux/main/.env.example" \
+  "https://raw.githubusercontent.com/torr9522/jizhang/main/.env.example" \
   -o .env
 chmod 600 .env
 sed -i \
@@ -157,12 +162,12 @@ docker compose up -d
 
 For browser sign-in, enable MCP, configure the public HTTPS Site URL, and add the `/mcp` URL to your client's OAuth connection flow. Review and revoke authorized connections in Settings. See [MCP OAuth setup](docs/mcp-oauth.md).
 
-Alternatively, create an MCP-client API key in Subdux and connect an MCP client:
+Alternatively, create an MCP-client API key in jizhang and connect an MCP client:
 
 ```json
 {
   "mcpServers": {
-    "subdux": {
+    "jizhang": {
       "type": "http",
       "url": "http://localhost:8080/mcp",
       "headers": {
@@ -177,9 +182,9 @@ Alternatively, create an MCP-client API key in Subdux and connect an MCP client:
 
 The endpoint is stateless: every `POST /mcp` request is authenticated independently. Write tools require an `idempotency_key`, so a client can safely retry after a timeout without repeating an operation. Reusing a key with different arguments is rejected, and keys are isolated per user.
 
-Subdux supports JSON-RPC requests for `initialize`, `ping`, `tools/list`, and `tools/call`. It does not keep MCP transport sessions or provide SSE/server-initiated streaming.
+jizhang supports JSON-RPC requests for `initialize`, `ping`, `tools/list`, and `tools/call`. It does not keep MCP transport sessions or provide SSE/server-initiated streaming.
 
-## What Subdux Gives You
+## What jizhang Gives You
 
 **Preview recurring expenses**
 
@@ -207,13 +212,13 @@ Sensitive operations such as credential changes, user management, system setting
 
 **Take your data with you at any time**
 
-Subdux's native JSON format can migrate subscriptions, categories, payment methods, currency preferences, and notification settings. Sensitive notification secrets are redacted by default; when a complete migration is required, secrets can be exported after reauthentication. A preview shows which records will be added, updated, or skipped before import. Existing Wallos users can likewise preview the migration before importing subscriptions, categories, currencies, and payment methods.
+jizhang's Subdux-compatible JSON format can migrate subscriptions, categories, payment methods, currency preferences, and notification settings. Sensitive notification secrets are redacted by default; when a complete migration is required, secrets can be exported after reauthentication. A preview shows which records will be added, updated, or skipped before import. Existing Wallos users can likewise preview the migration before importing subscriptions, categories, currencies, and payment methods.
 
 Calendar feeds provide read-only subscriptions through independent tokens for use with common calendar clients. Administrators can also create or schedule instance backups, choose whether to include uploaded assets, enable encryption, and set a retention count. Together with the REST API and MCP, this keeps data both fully portable and safely available to other tools.
 
 ### Optional Jev automatic classification
 
-In **Settings → Subscription → Jev automatic classification**, each user can save their own TypeSafe API key and enable automatic classification. It is off by default. When adding a subscription, Subdux quietly selects a sufficiently confident suggestion from that user's existing categories after typing pauses. Manual selection or clearing takes priority; editing existing subscriptions does not trigger classification. Unavailable or uncertain suggestions never block saving.
+In **Settings → Subscription → Jev automatic classification**, each user can save their own TypeSafe API key and enable automatic classification. It is off by default. When adding a subscription, jizhang quietly selects a sufficiently confident suggestion from that user's existing categories after typing pauses. Manual selection or clearing takes priority; editing existing subscriptions does not trigger classification. Unavailable or uncertain suggestions never block saving.
 
 Only the subscription name, website domain and category names are sent to TypeSafe. Notes, amounts, URL paths and query parameters are excluded. Keys are encrypted on the server, never returned by the API, and excluded from user JSON exports. Keep the server's settings encryption key with full database backups, as for other encrypted credentials. Removing a Jev key also disables the feature.
 
@@ -252,9 +257,9 @@ The same settings section can test the saved credential without sending subscrip
 - Set stable `JWT_SECRET` and `SETTINGS_ENCRYPTION_KEY` values in production.
 - Configure `CORS_ALLOW_ORIGINS` and/or the in-app `site_url` when serving behind a public domain.
 - Configure SMTP before enabling email verification, password reset, or email notifications.
-- If you use OIDC, make sure the redirect URL configured in Subdux exactly matches the provider configuration.
+- If you use OIDC, make sure the redirect URL configured in jizhang exactly matches the provider configuration.
 - Passkeys and OIDC generally require correct public URL and HTTPS configuration.
-- If you enable the in-app system proxy, configure egress ACLs on that proxy. For user-configurable outbound requests, Subdux applies hostname policy before proxying, but proxy DNS resolution and private-network blocking are the proxy's responsibility. Admin-configured outbound destinations are trusted as administrator policy.
+- If you enable the in-app system proxy, configure egress ACLs on that proxy. For user-configurable outbound requests, jizhang applies hostname policy before proxying, but proxy DNS resolution and private-network blocking are the proxy's responsibility. Admin-configured outbound destinations are trusted as administrator policy.
 
 ## Architecture
 
@@ -265,7 +270,7 @@ The same settings section can test the saved credential without sending subscrip
 ## Project Structure
 
 ```text
-subdux/
+jizhang/
 ├── cmd/server/          # Go server entrypoint
 ├── internal/            # Backend application code
 │   ├── api/             # Echo handlers and routing
@@ -289,6 +294,13 @@ subdux/
 - Optional: `tmux` for `make dev`
 
 ### Local development
+
+Clone this maintained repository:
+
+```bash
+git clone https://github.com/torr9522/jizhang.git
+cd jizhang
+```
 
 Because the frontend is embedded into the backend binary, you need `web/dist` before running the Go server directly.
 
@@ -332,8 +344,17 @@ cd web && bun run test  # frontend tests
 
 ## Contributing
 
-Issues and pull requests are welcome.
+Issues and pull requests are welcome in
+[`torr9522/jizhang`](https://github.com/torr9522/jizhang/issues).
+
+## Upstream project and maintenance
+
+This repository is maintained by `torr9522` and is not the official upstream
+project. The original project is
+[`kasuha07/subdux`](https://github.com/kasuha07/subdux). The initial functional
+baseline, preserved history, licensing, and upstream update policy are recorded
+in [`UPSTREAM.md`](UPSTREAM.md).
 
 ## License
 
-Subdux is licensed under **GPL-3.0-or-later**. See [`LICENSE`](LICENSE).
+jizhang is distributed under **GPL-3.0-or-later**, preserving the upstream license and history. See [`LICENSE`](LICENSE) and [`UPSTREAM.md`](UPSTREAM.md).

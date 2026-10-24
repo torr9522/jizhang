@@ -40,7 +40,7 @@ function settings(overrides: Partial<SystemSettings> = {}): SystemSettings {
     oidc_userinfo_endpoint: "",
     registration_email_verification_enabled: false,
     registration_enabled: false,
-    site_name: "Subdux",
+    site_name: "jizhang",
     site_url: "",
     smtp_auth_method: "auto",
     smtp_enabled: false,

@@ -1,11 +1,11 @@
-# Subdux
+# jizhang
 
-[![CI](https://github.com/kasuha07/subdux/actions/workflows/ci.yml/badge.svg)](https://github.com/kasuha07/subdux/actions/workflows/ci.yml)
-[![GHCR](https://img.shields.io/badge/GHCR-ghcr.io%2Fkasuha07%2Fsubdux-2ea44f?logo=docker)](https://github.com/kasuha07/subdux/pkgs/container/subdux)
+[![CI](https://github.com/torr9522/jizhang/actions/workflows/ci.yml/badge.svg)](https://github.com/torr9522/jizhang/actions/workflows/ci.yml)
+[![GHCR](https://img.shields.io/badge/GHCR-ghcr.io%2Ftorr9522%2Fjizhang-2ea44f?logo=docker)](https://github.com/torr9522/jizhang/pkgs/container/jizhang)
 [![License: GPL-3.0-or-later](https://img.shields.io/badge/License-GPL--3.0--or--later-blue.svg)](../LICENSE)
 
 <p align="center">
-  <img src="../web/public/subdux-logo.svg" alt="Subdux" width="320">
+  <img src="../web/public/subdux-logo.svg" alt="jizhang" width="320">
 </p>
 
 <p align="center">
@@ -18,13 +18,18 @@
 <p align="center">
   <a href="#快速开始"><strong>立即部署</strong></a> ·
   <a href="#自动化与-mcp">连接 AI Agent</a> ·
-  <a href="#subdux-能做什么">了解产品</a> ·
+  <a href="#jizhang-能做什么">了解产品</a> ·
   <a href="../README.md">English</a>
 </p>
 
 ---
 
-Subdux 把散落在各处的订阅周期扣费整理成一条清晰、可行动的时间线：下一笔什么时候扣、跨币种到底花了多少、应该续费还是取消，都能在账单发生前看见并做出决定。
+> 本仓库是由 `torr9522` 个人维护的 **jizhang** 项目，初始功能基线为上游 Subdux
+> `v0.33.0`。日常开发与发布以
+> [`torr9522/jizhang`](https://github.com/torr9522/jizhang) 为准；准确的上游
+> 基线和更新策略见 [`UPSTREAM.md`](../UPSTREAM.md)。
+
+jizhang 把散落在各处的订阅周期扣费整理成一条清晰、可行动的时间线：下一笔什么时候扣、跨币种到底花了多少、应该续费还是取消，都能在账单发生前看见并做出决定。
 
 单二进制交付，docker 一键部署。订阅记录、通知配置都保留在你自己的基础设施中。
 
@@ -33,41 +38,41 @@ Subdux 把散落在各处的订阅周期扣费整理成一条清晰、可行动�
 <table>
   <tr>
     <td width="33.33%" align="center">
-      <img src="screenshots/dashboard.png" alt="Subdux 仪表盘">
+      <img src="screenshots/dashboard.png" alt="jizhang 仪表盘">
       <br>
       <strong>仪表盘</strong>
     </td>
     <td width="33.33%" align="center">
-      <img src="screenshots/action_center.png" alt="Subdux 行动中心">
+      <img src="screenshots/action_center.png" alt="jizhang 行动中心">
       <br>
       <strong>行动中心</strong>
     </td>
     <td width="33.33%" align="center">
-      <img src="screenshots/reports.png" alt="Subdux 报表分析">
+      <img src="screenshots/reports.png" alt="jizhang 报表分析">
       <br>
       <strong>报表分析</strong>
     </td>
   </tr>
   <tr>
     <td width="33.33%" align="center">
-      <img src="screenshots/notification_settings.png" alt="Subdux 通知设置">
+      <img src="screenshots/notification_settings.png" alt="jizhang 通知设置">
       <br>
       <strong>通知设置</strong>
     </td>
     <td width="33.33%" align="center">
-      <img src="screenshots/calendar_view.png" alt="Subdux 日历视图">
+      <img src="screenshots/calendar_view.png" alt="jizhang 日历视图">
       <br>
       <strong>日历视图</strong>
     </td>
     <td width="33.33%" align="center">
-      <img src="screenshots/subscription_detail.png" alt="Subdux 订阅详情">
+      <img src="screenshots/subscription_detail.png" alt="jizhang 订阅详情">
       <br>
       <strong>订阅详情</strong>
     </td>
   </tr>
 </table>
 
-## 为什么选择 Subdux
+## 为什么选择 jizhang
 
 - **轻量部署。** 前端、后端与后台任务集成在单个 Go 二进制中，使用 SQLite 持久化，无需额外部署数据库或缓存服务。
 - **围绕续费决策，而不只是记录订阅。** 行动中心集中管理待处理事项，续费与修改历史保留每次决策后的变化。
@@ -79,27 +84,27 @@ Subdux 把散落在各处的订阅周期扣费整理成一条清晰、可行动�
 
 ### Docker CLI
 
-下载 [`.env.example`](../.env.example) 并重命名为 `subdux.env`，再为 `JWT_SECRET` 和 `SETTINGS_ENCRYPTION_KEY` 分别生成稳定的随机密钥：
+下载 [`.env.example`](../.env.example) 并重命名为 `jizhang.env`，再为 `JWT_SECRET` 和 `SETTINGS_ENCRYPTION_KEY` 分别生成稳定的随机密钥：
 
 ```bash
 curl -fsSL \
-  "https://raw.githubusercontent.com/kasuha07/subdux/main/.env.example" \
-  -o subdux.env
-chmod 600 subdux.env
+  "https://raw.githubusercontent.com/torr9522/jizhang/main/.env.example" \
+  -o jizhang.env
+chmod 600 jizhang.env
 sed -i \
   -e "s|^JWT_SECRET=.*$|JWT_SECRET=$(openssl rand -hex 32)|" \
   -e "s|^SETTINGS_ENCRYPTION_KEY=.*$|SETTINGS_ENCRYPTION_KEY=$(openssl rand -hex 32)|" \
-  subdux.env
+  jizhang.env
 mkdir -p data
 
 docker run -d \
   --name subdux \
   --restart unless-stopped \
   -p 8080:8080 \
-  --env-file ./subdux.env \
+  --env-file ./jizhang.env \
   -e DATA_PATH=/data \
   -v "$(pwd)/data:/data" \
-  ghcr.io/kasuha07/subdux:stable
+  ghcr.io/torr9522/jizhang:jizhang-v0.33.0-1
 ```
 
 容器启动后访问 <http://localhost:8080>。
@@ -115,7 +120,7 @@ docker logs subdux
 - 用户名：`admin`
 - 邮箱：`admin@subdux.local`
 
-如果想自行指定初始凭据，请在首次启动前修改 `subdux.env` 中的 `SUBDUX_INITIAL_ADMIN_USERNAME`、`SUBDUX_INITIAL_ADMIN_EMAIL` 和 `SUBDUX_INITIAL_ADMIN_PASSWORD`。默认关闭公开注册，登录管理员后可在管理设置中开启。
+如果想自行指定初始凭据，请在首次启动前修改 `jizhang.env` 中的 `SUBDUX_INITIAL_ADMIN_USERNAME`、`SUBDUX_INITIAL_ADMIN_EMAIL` 和 `SUBDUX_INITIAL_ADMIN_PASSWORD`。默认关闭公开注册，登录管理员后可在管理设置中开启。
 
 ### Docker Compose
 
@@ -123,9 +128,9 @@ docker logs subdux
 
 ```bash
 curl -fsSLO \
-  "https://raw.githubusercontent.com/kasuha07/subdux/main/docker-compose.yml"
+  "https://raw.githubusercontent.com/torr9522/jizhang/main/docker-compose.yml"
 curl -fsSL \
-  "https://raw.githubusercontent.com/kasuha07/subdux/main/.env.example" \
+  "https://raw.githubusercontent.com/torr9522/jizhang/main/.env.example" \
   -o .env
 chmod 600 .env
 sed -i \
@@ -155,12 +160,12 @@ docker compose up -d
 
 使用网页授权时，请管理员启用 MCP 并配置公开的 HTTPS 站点地址，然后在客户端添加 `/mcp` 地址，通过 OAuth 登录并确认权限。在设置页可查看和撤销已授权连接。详见 [MCP OAuth 接入说明](mcp-oauth.md)。
 
-也可以在 Subdux 设置中创建 MCP 客户端类型的 API Key，然后连接 MCP 客户端：
+也可以在 jizhang 设置中创建 MCP 客户端类型的 API Key，然后连接 MCP 客户端：
 
 ```json
 {
   "mcpServers": {
-    "subdux": {
+    "jizhang": {
       "type": "http",
       "url": "http://localhost:8080/mcp",
       "headers": {
@@ -175,9 +180,9 @@ docker compose up -d
 
 端点保持无状态：每个 `POST /mcp` 请求都会独立认证。写操作工具必须提供 `idempotency_key`，客户端在超时后可以安全重试而不会重复执行；同一个 Key 携带不同参数会被拒绝，且 Key 按用户隔离。
 
-Subdux 为 `initialize`、`ping`、`tools/list` 和 `tools/call` 返回 JSON-RPC 响应，不维护 MCP 传输会话，也不提供 SSE 或服务端主动流式推送。
+jizhang 为 `initialize`、`ping`、`tools/list` 和 `tools/call` 返回 JSON-RPC 响应，不维护 MCP 传输会话，也不提供 SSE 或服务端主动流式推送。
 
-## Subdux 能做什么
+## jizhang 能做什么
 
 **预览周期支出**
 
@@ -205,7 +210,7 @@ Subdux 为 `initialize`、`ping`、`tools/list` 和 `tools/call` 返回 JSON-RPC
 
 **数据随时可以带走**
 
-Subdux 原生 JSON 可用于迁移订阅、分类、支付方式、币种偏好与通知配置，敏感通知密钥默认会被脱敏；确实需要完整迁移时，也可以在重新验证身份后导出密钥。导入前会展示变更预览，便于确认新增、更新和跳过的内容。已有 Wallos 用户也可以先预览迁移结果，再导入订阅、分类、币种和支付方式。
+jizhang 使用兼容 Subdux 的 JSON 格式迁移订阅、分类、支付方式、币种偏好与通知配置，敏感通知密钥默认会被脱敏；确实需要完整迁移时，也可以在重新验证身份后导出密钥。导入前会展示变更预览，便于确认新增、更新和跳过的内容。已有 Wallos 用户也可以先预览迁移结果，再导入订阅、分类、币种和支付方式。
 
 日历 Feed 通过独立 Token 提供只读订阅，可以接入常用日历客户端。管理员还可以创建或定时生成实例备份，选择是否包含上传资源、启用加密并设置保留数量。结合 REST API 和 MCP，数据既能完整迁移，也能继续被其他工具安全使用。
 
@@ -243,9 +248,9 @@ Subdux 原生 JSON 可用于迁移订阅、分类、支付方式、币种偏好�
 - 在生产环境中设置稳定的 `JWT_SECRET` 和 `SETTINGS_ENCRYPTION_KEY`。
 - 对外部署时配置 `CORS_ALLOW_ORIGINS` 和/或系统内的 `site_url`。
 - 启用邮箱验证、密码重置或邮件通知前，先完成 SMTP 配置。
-- 如果启用 OIDC，确保 Subdux 中的回调地址与身份提供方配置完全一致。
+- 如果启用 OIDC，确保 jizhang 中的回调地址与身份提供方配置完全一致。
 - Passkey 和 OIDC 通常要求正确的公网 URL 与 HTTPS 配置。
-- 如果启用应用内的系统代理，请在代理侧配置出站 ACL。对于用户可配置的出站请求，Subdux 会在代理前应用主机名策略；但代理 DNS 解析和私网地址阻断由代理负责。管理员配置的出站目标视为管理员策略并被信任。
+- 如果启用应用内的系统代理，请在代理侧配置出站 ACL。对于用户可配置的出站请求，jizhang 会在代理前应用主机名策略；但代理 DNS 解析和私网地址阻断由代理负责。管理员配置的出站目标视为管理员策略并被信任。
 
 ## 架构说明
 
@@ -256,7 +261,7 @@ Subdux 原生 JSON 可用于迁移订阅、分类、支付方式、币种偏好�
 ## 项目结构
 
 ```text
-subdux/
+jizhang/
 ├── cmd/server/          # Go 服务入口
 ├── internal/            # 后端代码
 │   ├── api/             # Echo 路由与处理器
@@ -280,6 +285,13 @@ subdux/
 - 可选：使用 `make dev` 时需要 tmux
 
 ### 本地开发
+
+克隆本维护仓库：
+
+```bash
+git clone https://github.com/torr9522/jizhang.git
+cd jizhang
+```
 
 由于前端会被嵌入到后端二进制，所以直接运行 Go 服务前需要先生成 `web/dist`。
 
@@ -323,8 +335,15 @@ cd web && bun run test  # 前端测试
 
 ## 贡献
 
-欢迎提交 Issue 和 Pull Request。
+欢迎在 [`torr9522/jizhang`](https://github.com/torr9522/jizhang/issues)
+提交 Issue 和 Pull Request。
+
+## 上游项目与维护说明
+
+本仓库由 `torr9522` 个人维护，并非上游官方仓库。原始上游项目为
+[`kasuha07/subdux`](https://github.com/kasuha07/subdux)。初始功能基线、保留的
+历史、许可证及上游更新策略详见 [`UPSTREAM.md`](../UPSTREAM.md)。
 
 ## 许可证
 
-Subdux 使用 **GPL-3.0-or-later** 许可证，详见 [`LICENSE`](../LICENSE)。
+jizhang 按 **GPL-3.0-or-later** 许可证分发，并保留上游许可证和历史，详见 [`LICENSE`](../LICENSE) 与 [`UPSTREAM.md`](../UPSTREAM.md)。

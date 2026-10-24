@@ -1,22 +1,22 @@
 # MCP OAuth
 
-Subdux supports browser-based OAuth authorization for remote MCP clients alongside existing MCP-client API keys. OAuth access and refresh tokens are separate from human REST sessions and can only authorize `/mcp` tools.
+jizhang supports browser-based OAuth authorization for remote MCP clients alongside existing MCP-client API keys. OAuth access and refresh tokens are separate from human REST sessions and can only authorize `/mcp` tools.
 
 ## Configure the instance
 
 1. Enable MCP in administrator settings.
-2. Set **Site URL** to the public HTTPS origin, for example `https://subdux.example.com`. OAuth uses this configured origin for discovery, issuer identification and token resource binding. Paths, queries, fragments and embedded credentials are not supported. HTTP is accepted only for `localhost`, `127.0.0.1` and `[::1]` development instances.
-3. Ensure clients can reach the MCP and OAuth endpoints. Hosted ChatGPT and Claude connections originate outside your local network. Keep reverse-proxy authentication from intercepting discovery and OAuth requests; Subdux verifies the application credentials itself.
+2. Set **Site URL** to the public HTTPS origin, for example `https://jizhang.example.com`. OAuth uses this configured origin for discovery, issuer identification and token resource binding. Paths, queries, fragments and embedded credentials are not supported. HTTP is accepted only for `localhost`, `127.0.0.1` and `[::1]` development instances.
+3. Ensure clients can reach the MCP and OAuth endpoints. Hosted ChatGPT and Claude connections originate outside your local network. Keep reverse-proxy authentication from intercepting discovery and OAuth requests; jizhang verifies the application credentials itself.
 
 Existing API-key connections continue working without a configured Site URL.
 
 ## Connect a client
 
-Add `https://subdux.example.com/mcp` as a Streamable HTTP server. Select OAuth when the client offers an authentication choice. Open its sign-in flow, log in to Subdux using any existing supported method, and approve the displayed client and permissions. No Subdux password or human-session token is shared with the MCP client.
+Add `https://jizhang.example.com/mcp` as a Streamable HTTP server. Select OAuth when the client offers an authentication choice. Open its sign-in flow, log in to jizhang using any existing supported method, and approve the displayed client and permissions. No jizhang password or human-session token is shared with the MCP client.
 
 Clients can identify themselves through CIMD (an HTTPS Client ID Metadata Document), DCR (`POST /oauth/register`), or a previously registered client ID. The supported token endpoint authentication method is `none`: public clients use mandatory PKCE `S256`, without a client secret. Client credentials, implicit grants and password grants are not supported. Client metadata names are supplied by clients and do not prove publisher identity.
 
-The authorization-code flow requires `response_type=code`, `client_id`, `redirect_uri`, `code_challenge`, `code_challenge_method=S256`, and `resource=https://subdux.example.com/mcp`. The token request also requires that same `resource`. Redirect URIs match registration exactly, with the RFC 8252 exception for the port of an HTTP loopback URI. Authorization responses include `iss` and echo the client's `state`.
+The authorization-code flow requires `response_type=code`, `client_id`, `redirect_uri`, `code_challenge`, `code_challenge_method=S256`, and `resource=https://jizhang.example.com/mcp`. The token request also requires that same `resource`. Redirect URIs match registration exactly, with the RFC 8252 exception for the port of an HTTP loopback URI. Authorization responses include `iss` and echo the client's `state`.
 
 Available scopes:
 
@@ -49,7 +49,7 @@ Unauthorized MCP requests return a Bearer challenge with the resource metadata U
 
 OAuth clients, authorization interactions, token hashes and grants are persisted in the instance database. Write audit and idempotency records include the stable OAuth grant/client identity. Existing per-user idempotency semantics and transactional mutation/audit/result persistence are preserved.
 
-CIMD fetching uses strict public-network egress, rejects redirects, bounds response size and timeout, and caches metadata for at most one hour. Registration and authorization requests have body, rate and storage limits. Credentials and interaction handles are redacted from Subdux request logs; reverse proxies should also redact query strings for OAuth and consent routes.
+CIMD fetching uses strict public-network egress, rejects redirects, bounds response size and timeout, and caches metadata for at most one hour. Registration and authorization requests have body, rate and storage limits. Credentials and interaction handles are redacted from jizhang request logs; reverse proxies should also redact query strings for OAuth and consent routes.
 
 ## Validation
 
