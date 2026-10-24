@@ -57,6 +57,7 @@ func createSubscriptionRolloverTestUser(t *testing.T, db *gorm.DB) model.User {
 
 func setSubscriptionRolloverTestNow(t *testing.T) time.Time {
 	t.Helper()
+	t.Cleanup(pkg.SetSystemTimezoneForTest(time.UTC))
 	now := mustDate(t, "2026-03-15")
 	restoreClock := pkg.SetNowForTest(now)
 	t.Cleanup(restoreClock)
