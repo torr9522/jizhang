@@ -254,7 +254,7 @@ jizhang 使用兼容 Subdux 的 JSON 格式迁移订阅、分类、支付方式�
 
 ## 架构说明
 
-- **后端：** Go 1.26.4 + Echo + GORM + SQLite
+- **后端：** Go 1.26.10 + Echo + GORM + SQLite
 - **前端：** React 19 + Vite + TypeScript + Tailwind CSS v4 + Shadcn/UI
 - **部署模型：** 前端先构建到 `web/dist`，再通过 `go:embed` 嵌入 Go 二进制
 
@@ -280,7 +280,7 @@ jizhang/
 
 ### 环境要求
 
-- Go **1.26.4+**
+- Go **1.26.10+**
 - Bun **1.x**
 - 可选：使用 `make dev` 时需要 tmux
 

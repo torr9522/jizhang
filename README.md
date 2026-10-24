@@ -263,7 +263,7 @@ The same settings section can test the saved credential without sending subscrip
 
 ## Architecture
 
-- **Backend:** Go 1.26.4 + Echo + GORM + SQLite (default) or PostgreSQL
+- **Backend:** Go 1.26.10 + Echo + GORM + SQLite (default) or PostgreSQL
 - **Frontend:** React 19 + Vite + TypeScript + Tailwind CSS v4 + Shadcn/UI
 - **Deployment model:** the frontend is built into `web/dist`, then embedded into the Go binary via `go:embed`
 
@@ -289,7 +289,7 @@ jizhang/
 
 ### Requirements
 
-- Go **1.26.4+**
+- Go **1.26.10+**
 - Bun **1.x**
 - Optional: `tmux` for `make dev`
 
