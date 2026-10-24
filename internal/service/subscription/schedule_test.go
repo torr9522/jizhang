@@ -3,6 +3,8 @@ package subscription
 import (
 	"testing"
 	"time"
+
+	"github.com/kasuha07/subdux/internal/pkg"
 )
 
 func mustDate(t *testing.T, value string) time.Time {
@@ -12,6 +14,16 @@ func mustDate(t *testing.T, value string) time.Time {
 		t.Fatalf("parse date %q: %v", value, err)
 	}
 	return normalizeDateUTC(parsed)
+}
+
+func setNowForTestDate(t *testing.T, value string) func() {
+	t.Helper()
+	restoreTimezone := pkg.SetSystemTimezoneForTest(time.UTC)
+	restoreClock := pkg.SetNowForTest(mustDate(t, value))
+	return func() {
+		restoreClock()
+		restoreTimezone()
+	}
 }
 
 func TestNormalizeBillingDraft_MonthEndInterval(t *testing.T) {

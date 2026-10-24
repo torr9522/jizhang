@@ -12,6 +12,7 @@ import (
 	"unicode"
 
 	"github.com/kasuha07/subdux/internal/model"
+	"github.com/kasuha07/subdux/internal/pkg"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -102,7 +103,7 @@ func (s *Service) saveClient(m ClientMetadata, replace bool) error {
 	if err != nil {
 		return err
 	}
-	client := model.MCPOAuthClient{ID: m.ClientID, Name: m.ClientName, RedirectURIs: string(redirects), MetadataAt: time.Now()}
+	client := model.MCPOAuthClient{ID: m.ClientID, Name: m.ClientName, RedirectURIs: string(redirects), MetadataAt: pkg.NowUTC()}
 	return s.db.Transaction(func(tx *gorm.DB) error {
 		var count int64
 		if err := tx.Model(&model.MCPOAuthClient{}).Count(&count).Error; err != nil {

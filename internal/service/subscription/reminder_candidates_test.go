@@ -16,6 +16,7 @@ import (
 
 func newSubscriptionReminderCandidateTestDB(t *testing.T) *gorm.DB {
 	t.Helper()
+	t.Cleanup(pkg.SetSystemTimezoneForTest(time.UTC))
 
 	dbPath := filepath.Join(t.TempDir(), "subdux-subscription-reminder-candidates-test.db")
 	db, err := gorm.Open(sqlite.Open(dbPath), &gorm.Config{})

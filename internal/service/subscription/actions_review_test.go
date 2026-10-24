@@ -11,7 +11,7 @@ import (
 
 func createActionReviewFixture(t *testing.T, mode string) (*Service, model.User, *model.Subscription) {
 	t.Helper()
-	t.Cleanup(pkg.SetNowForTest(mustDate(t, "2026-03-01")))
+	t.Cleanup(setNowForTestDate(t, "2026-03-01"))
 	db := newTestDB(t)
 	user := createTestUser(t, db)
 	svc := NewService(db)
@@ -137,7 +137,7 @@ func TestActionReviewDoesNotHideNextBillingPeriod(t *testing.T) {
 		t.Fatal(err)
 	}
 	assertActionReviewTypes(t, svc, user.ID)
-	restore := pkg.SetNowForTest(mustDate(t, "2026-03-06"))
+	restore := setNowForTestDate(t, "2026-03-06")
 	defer restore()
 	assertActionReviewTypes(t, svc, user.ID, actionTypeUpcomingRenewal)
 }

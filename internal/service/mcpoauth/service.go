@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/kasuha07/subdux/internal/model"
+	"github.com/kasuha07/subdux/internal/pkg"
 	"github.com/kasuha07/subdux/internal/service/outbound"
 	"github.com/kasuha07/subdux/internal/service/userstatus"
 	"gorm.io/gorm"
@@ -129,7 +130,7 @@ func (s *Service) StartCleanupLoop(ctx context.Context) {
 			case <-ctx.Done():
 				return
 			case <-ticker.C:
-				_ = s.WithContext(ctx).Cleanup(time.Now())
+				_ = s.WithContext(ctx).Cleanup(pkg.NowUTC())
 			}
 		}
 	}()

@@ -80,7 +80,7 @@ func TestAnalyticsReportIgnoresSubMinorUnitPriceDrift(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+			restoreClock := setNowForTestDate(t, "2026-03-01")
 			t.Cleanup(restoreClock)
 
 			db := newTestDB(t)
@@ -106,7 +106,7 @@ func TestAnalyticsReportIgnoresSubMinorUnitPriceDrift(t *testing.T) {
 }
 
 func TestAnalyticsReportStillReportsRealPriceIncrease(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -128,7 +128,7 @@ func TestAnalyticsReportStillReportsRealPriceIncrease(t *testing.T) {
 }
 
 func TestActionCenterIgnoresSubMinorUnitPriceDrift(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -151,7 +151,7 @@ func TestActionCenterIgnoresSubMinorUnitPriceDrift(t *testing.T) {
 }
 
 func TestActionCenterStillReportsRealPriceIncrease(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -206,7 +206,7 @@ func createTenCentSubscriptions(t *testing.T, service *Service, userID uint) {
 }
 
 func TestDashboardSummaryTotalsLandOnMinorUnitGrid(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -228,7 +228,7 @@ func TestDashboardSummaryTotalsLandOnMinorUnitGrid(t *testing.T) {
 }
 
 func TestAnalyticsReportTotalsLandOnMinorUnitGrid(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -257,7 +257,7 @@ func TestAnalyticsReportTotalsLandOnMinorUnitGrid(t *testing.T) {
 }
 
 func TestSubscriptionEventPersistsRoundedMonthlyAmount(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)

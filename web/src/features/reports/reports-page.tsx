@@ -244,7 +244,7 @@ export default function ReportsPage() {
               />
             </section>
 
-            <section className="grid gap-6 lg:grid-cols-3">
+            <section className="grid grid-cols-1 gap-6 lg:grid-cols-3">
               <BreakdownPanel
                 title={t("reports.renewalModes.title")}
                 icon={RefreshCw}
@@ -274,7 +274,7 @@ export default function ReportsPage() {
               />
             </section>
 
-            <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+            <section className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
               <TopSubscriptionsPanel
                 items={topSubscriptions}
                 formatAmount={formatAmount}
@@ -288,7 +288,7 @@ export default function ReportsPage() {
               />
             </section>
 
-            <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+            <section className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
               <PriceIncreasesPanel
                 items={priceIncreases}
                 formatAmount={formatAmount}

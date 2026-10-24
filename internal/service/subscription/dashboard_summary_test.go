@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/kasuha07/subdux/internal/model"
-	"github.com/kasuha07/subdux/internal/pkg"
 	"github.com/kasuha07/subdux/internal/service/money"
 )
 
@@ -109,7 +108,7 @@ func TestSubscriptionChargeDatesInRange(t *testing.T) {
 }
 
 func TestGetDashboardSummarySplitsCommittedSpend(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -162,7 +161,7 @@ func TestGetDashboardSummarySplitsCommittedSpend(t *testing.T) {
 }
 
 func TestGetDashboardSummaryAllowsLargeAggregateAndAnnualizedValues(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -203,7 +202,7 @@ func TestGetDashboardSummaryAllowsLargeAggregateAndAnnualizedValues(t *testing.T
 }
 
 func TestGetDashboardSummaryAllowsLargeOccurrenceAggregate(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -236,7 +235,7 @@ func TestGetDashboardSummaryAllowsLargeOccurrenceAggregate(t *testing.T) {
 }
 
 func TestGetDashboardSummaryExcludesCancelAtPeriodEndFromSpend(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -295,7 +294,7 @@ func TestGetDashboardSummaryExcludesCancelAtPeriodEndFromSpend(t *testing.T) {
 }
 
 func TestGetDashboardSummaryCountsCancelAtPeriodEndAsExpiring(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)

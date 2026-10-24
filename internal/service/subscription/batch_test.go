@@ -65,7 +65,7 @@ func seedPriceIncreaseFixtures(t *testing.T, service *Service, db *gorm.DB, user
 // would make the larger fixture issue strictly more queries; equal counts is
 // the regression guard against reintroducing N+1.
 func TestActionCenterReadPathsHaveConstantQueryCount(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-10"))
+	restoreClock := setNowForTestDate(t, "2026-03-10")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)

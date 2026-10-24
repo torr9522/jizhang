@@ -155,7 +155,7 @@ func TestPendingPriceTrialLifecycleEndToEnd(t *testing.T) {
 	}
 
 	// Crossing the effective date persists the switch with a system event.
-	restore := pkg.SetNowForTest(mustDate(t, "2026-03-22"))
+	restore := setNowForTestDate(t, "2026-03-22")
 	defer restore()
 	if err := svc.ReconcileUserLifecycle(user.ID); err != nil {
 		t.Fatalf("reconcile: %v", err)
@@ -354,7 +354,7 @@ func TestAnnualGrowthIgnoresScheduledPriceTakingEffect(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	restore := pkg.SetNowForTest(mustDate(t, "2026-06-02"))
+	restore := setNowForTestDate(t, "2026-06-02")
 	defer restore()
 	if err := svc.ReconcileUserLifecycle(user.ID); err != nil {
 		t.Fatal(err)

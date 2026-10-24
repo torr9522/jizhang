@@ -5,13 +5,12 @@ import (
 	"testing"
 
 	"github.com/kasuha07/subdux/internal/model"
-	"github.com/kasuha07/subdux/internal/pkg"
 	"github.com/kasuha07/subdux/internal/service/money"
 	"gorm.io/gorm"
 )
 
 func TestLegacyAmountAboveCurrentMaximumRemainsUsable(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -99,7 +98,7 @@ func TestLegacyAmountAboveCurrentMaximumRemainsUsable(t *testing.T) {
 }
 
 func TestDailyAmountMayDeriveAbovePersistedMaximumWhenMinorUnitsAreSafe(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -153,7 +152,7 @@ func TestDailyAmountMayDeriveAbovePersistedMaximumWhenMinorUnitsAreSafe(t *testi
 }
 
 func TestLegacyMinorUnitUnsafeDerivedAmountCanStillBeUpdatedAndDeleted(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -208,7 +207,7 @@ func TestLegacyMinorUnitUnsafeDerivedAmountCanStillBeUpdatedAndDeleted(t *testin
 }
 
 func TestActionCenterSkipsPriceIncreaseForUnsafeLegacyMonthlyAmount(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)

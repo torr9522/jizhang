@@ -5,11 +5,10 @@ import (
 	"time"
 
 	"github.com/kasuha07/subdux/internal/model"
-	"github.com/kasuha07/subdux/internal/pkg"
 )
 
 func TestGetActionCenterAggregatesRenewalRepairAndHistoryItems(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -146,7 +145,7 @@ func TestGetActionCenterAggregatesRenewalRepairAndHistoryItems(t *testing.T) {
 }
 
 func TestSnoozeActionHidesMatchingItem(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -188,7 +187,7 @@ func TestSnoozeActionHidesMatchingItem(t *testing.T) {
 }
 
 func TestActionCenterSuppressesRecoveredNotificationFailures(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -247,7 +246,7 @@ func TestActionCenterSuppressesRecoveredNotificationFailures(t *testing.T) {
 }
 
 func TestActionCenterSuppressesOlderPriceIncreasesAfterReduction(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -293,7 +292,7 @@ func TestActionCenterSuppressesOlderPriceIncreasesAfterReduction(t *testing.T) {
 }
 
 func TestActionCenterSuppressesEndedSubscriptionNotificationFailures(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -342,7 +341,7 @@ func TestActionCenterSuppressesEndedSubscriptionNotificationFailures(t *testing.
 }
 
 func TestActionCenterSuppressesEndedSubscriptionPriceIncreases(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)

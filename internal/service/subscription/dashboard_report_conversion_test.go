@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/kasuha07/subdux/internal/model"
-	"github.com/kasuha07/subdux/internal/pkg"
 )
 
 type successfulDashboardReportConverter struct{}
@@ -49,7 +48,7 @@ func TestDashboardAndReportShareSubscriptionAmountConversion(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+			restoreClock := setNowForTestDate(t, "2026-03-01")
 			t.Cleanup(restoreClock)
 
 			db := newTestDB(t)
@@ -110,7 +109,7 @@ func TestDashboardAndReportFailClosedOnUnavailableConversion(t *testing.T) {
 }
 
 func TestDashboardAndReportSkipConversionWithoutMonetaryContribution(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)

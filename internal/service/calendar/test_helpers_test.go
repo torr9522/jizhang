@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/kasuha07/subdux/internal/model"
+	"github.com/kasuha07/subdux/internal/pkg"
 	"github.com/kasuha07/subdux/internal/service/servicetest"
 	"gorm.io/gorm"
 )
@@ -31,4 +32,14 @@ func mustDate(t *testing.T, value string) time.Time {
 		t.Fatalf("parse date %q: %v", value, err)
 	}
 	return parsed
+}
+
+func setNowForTestDate(t *testing.T, value string) func() {
+	t.Helper()
+	restoreTimezone := pkg.SetSystemTimezoneForTest(time.UTC)
+	restoreClock := pkg.SetNowForTest(mustDate(t, value))
+	return func() {
+		restoreClock()
+		restoreTimezone()
+	}
 }

@@ -174,7 +174,7 @@ export function ReportsSkeleton() {
       </section>
 
       {/* 3. Breakdown Panels */}
-      <section className="grid gap-6 lg:grid-cols-3">
+      <section className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {Array.from({ length: 3 }).map((_, panelIndex) => (
           <Card key={panelIndex} className="reports-skeleton-shimmer">
             <CardHeader>
@@ -212,7 +212,7 @@ export function ReportsSkeleton() {
       </section>
 
       {/* 4. Top Subscriptions & Upcoming Renewals */}
-      <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <section className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <Card className="reports-skeleton-shimmer">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
@@ -270,7 +270,7 @@ export function ReportsSkeleton() {
       </section>
 
       {/* 5. Price Increases & Annual Growth */}
-      <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <section className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <Card className="reports-skeleton-shimmer">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">

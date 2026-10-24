@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/kasuha07/subdux/internal/model"
+	"github.com/kasuha07/subdux/internal/pkg"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -126,7 +127,7 @@ func TestChangePasswordRevokesMCPOAuthAccess(t *testing.T) {
 	if err := db.Create(&other).Error; err != nil {
 		t.Fatalf("failed to create other user: %v", err)
 	}
-	future := time.Now().Add(time.Hour)
+	future := pkg.NowUTC().Add(time.Hour)
 	for _, grant := range []model.MCPOAuthGrant{
 		{UserID: user.ID, ClientID: "client", ClientName: "Client", Scopes: "read write", Resource: "https://subdux.example/mcp", ExpiresAt: future},
 		{UserID: other.ID, ClientID: "client", ClientName: "Client", Scopes: "read", Resource: "https://subdux.example/mcp", ExpiresAt: future},
@@ -158,7 +159,7 @@ func TestChangePasswordRevokesMCPOAuthAccess(t *testing.T) {
 	if err := db.Take(&pending, "id = ?", "pending").Error; err != nil {
 		t.Fatalf("failed to reload request: %v", err)
 	}
-	if pending.ExpiresAt.After(time.Now()) {
+	if pending.ExpiresAt.After(pkg.NowUTC()) {
 		t.Fatal("pending MCP authorization request still usable after password change")
 	}
 }

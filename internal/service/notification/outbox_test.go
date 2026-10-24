@@ -25,6 +25,7 @@ func (c *notificationRetentionClock) Now() time.Time {
 
 func newNotificationOutboxTestDB(t *testing.T) *gorm.DB {
 	t.Helper()
+	t.Cleanup(pkg.SetSystemTimezoneForTest(time.UTC))
 
 	dbPath := filepath.Join(t.TempDir(), "subdux-notification-outbox-test.db")
 	db, err := gorm.Open(sqlite.Open(dbPath), &gorm.Config{})

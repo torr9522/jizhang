@@ -6,9 +6,9 @@ import (
 	"net/url"
 	"slices"
 	"strings"
-	"time"
 
 	"github.com/kasuha07/subdux/internal/model"
+	"github.com/kasuha07/subdux/internal/pkg"
 	"gorm.io/gorm"
 )
 
@@ -78,7 +78,7 @@ func (s *Service) Begin(params url.Values) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if err := s.Cleanup(time.Now()); err != nil {
+	if err := s.Cleanup(pkg.NowUTC()); err != nil {
 		return "", err
 	}
 	var count int64
@@ -93,7 +93,7 @@ func (s *Service) Begin(params url.Values) (string, error) {
 		return "", err
 	}
 	request := model.MCPOAuthRequest{ID: hash(handle), ClientID: client.ID, ClientName: client.Name, RedirectURI: redirect,
-		Scopes: scopes, Resource: resource, State: params.Get("state"), CodeChallenge: challenge, ExpiresAt: time.Now().Add(RequestTTL)}
+		Scopes: scopes, Resource: resource, State: params.Get("state"), CodeChallenge: challenge, ExpiresAt: pkg.NowUTC().Add(RequestTTL)}
 	if err := s.db.Create(&request).Error; err != nil {
 		return "", err
 	}
@@ -109,11 +109,11 @@ func (s *Service) Consent(handle string, userID uint) (*ConsentInfo, error) {
 	if len(handle) != 43 {
 		return nil, problem("invalid_request", "authorization request has expired or is invalid")
 	}
-	if err := s.db.Model(&model.MCPOAuthRequest{}).Where("id = ? AND user_id IS NULL AND decided_at IS NULL AND expires_at > ?", hash(handle), time.Now()).Update("user_id", userID).Error; err != nil {
+	if err := s.db.Model(&model.MCPOAuthRequest{}).Where("id = ? AND user_id IS NULL AND decided_at IS NULL AND expires_at > ?", hash(handle), pkg.NowUTC()).Update("user_id", userID).Error; err != nil {
 		return nil, err
 	}
 	var request model.MCPOAuthRequest
-	if err := s.db.Where("id = ? AND user_id = ? AND decided_at IS NULL AND expires_at > ?", hash(handle), userID, time.Now()).Take(&request).Error; err != nil {
+	if err := s.db.Where("id = ? AND user_id = ? AND decided_at IS NULL AND expires_at > ?", hash(handle), userID, pkg.NowUTC()).Take(&request).Error; err != nil {
 		return nil, problem("invalid_request", "authorization request has expired or is invalid")
 	}
 	return &ConsentInfo{request.ClientID, request.ClientName, request.RedirectURI, strings.Fields(request.Scopes)}, nil
@@ -126,7 +126,7 @@ func (s *Service) Decide(handle string, userID uint, approve, allowWrite bool) (
 			return err
 		}
 		var request model.MCPOAuthRequest
-		if err := tx.Where("id = ? AND user_id = ? AND decided_at IS NULL AND expires_at > ?", hash(handle), userID, time.Now()).Take(&request).Error; err != nil {
+		if err := tx.Where("id = ? AND user_id = ? AND decided_at IS NULL AND expires_at > ?", hash(handle), userID, pkg.NowUTC()).Take(&request).Error; err != nil {
 			return problem("invalid_request", "authorization request has expired or is invalid")
 		}
 		txService := *s
@@ -145,7 +145,7 @@ func (s *Service) Decide(handle string, userID uint, approve, allowWrite bool) (
 		}
 		query.Set("state", request.State)
 		query.Set("iss", issuer)
-		now := time.Now()
+		now := pkg.NowUTC()
 		updates := map[string]any{"decided_at": now}
 		if approve {
 			code, err := secret()
@@ -178,12 +178,12 @@ func (s *Service) Decide(handle string, userID uint, approve, allowWrite bool) (
 
 func (s *Service) ListGrants(userID uint) ([]model.MCPOAuthGrant, error) {
 	grants := []model.MCPOAuthGrant{}
-	err := s.db.Where("user_id = ? AND revoked_at IS NULL AND expires_at > ?", userID, time.Now()).Order("created_at DESC").Limit(50).Find(&grants).Error
+	err := s.db.Where("user_id = ? AND revoked_at IS NULL AND expires_at > ?", userID, pkg.NowUTC()).Order("created_at DESC").Limit(50).Find(&grants).Error
 	return grants, err
 }
 
 func (s *Service) RevokeGrant(userID, grantID uint) error {
-	result := s.db.Model(&model.MCPOAuthGrant{}).Where("id = ? AND user_id = ?", grantID, userID).Update("revoked_at", time.Now())
+	result := s.db.Model(&model.MCPOAuthGrant{}).Where("id = ? AND user_id = ?", grantID, userID).Update("revoked_at", pkg.NowUTC())
 	if result.Error != nil {
 		return result.Error
 	}

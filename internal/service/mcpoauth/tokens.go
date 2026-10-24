@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/kasuha07/subdux/internal/model"
+	"github.com/kasuha07/subdux/internal/pkg"
 	"golang.org/x/oauth2"
 	"gorm.io/gorm"
 )
@@ -81,7 +82,7 @@ func (s *Service) Exchange(params url.Values) (*TokenResponse, error) {
 			// and PostgreSQL without issuing two token families for one code.
 			// Claim before expiry/account/quota checks so a stale code read cannot
 			// bypass replay revocation. Rejected unused codes roll back the claim.
-			claim := tx.Model(&model.MCPOAuthRequest{}).Where("id = ? AND consumed_at IS NULL", request.ID).Update("consumed_at", time.Now())
+			claim := tx.Model(&model.MCPOAuthRequest{}).Where("id = ? AND consumed_at IS NULL", request.ID).Update("consumed_at", pkg.NowUTC())
 			if claim.Error != nil {
 				return claim.Error
 			}
@@ -92,20 +93,20 @@ func (s *Service) Exchange(params url.Values) (*TokenResponse, error) {
 				protocolErr = problem("invalid_grant", "authorization code was already used")
 				return nil // Commit the competing exchange's token-family revocation.
 			}
-			if time.Now().After(request.ExpiresAt) {
+			if pkg.NowUTC().After(request.ExpiresAt) {
 				return problem("invalid_grant", "authorization code expired")
 			}
 			if err := active(tx, *request.UserID); err != nil {
 				return err
 			}
 			var count int64
-			if err := tx.Model(&model.MCPOAuthGrant{}).Where("user_id = ? AND revoked_at IS NULL AND expires_at > ?", *request.UserID, time.Now()).Count(&count).Error; err != nil {
+			if err := tx.Model(&model.MCPOAuthGrant{}).Where("user_id = ? AND revoked_at IS NULL AND expires_at > ?", *request.UserID, pkg.NowUTC()).Count(&count).Error; err != nil {
 				return err
 			}
 			if count >= 50 {
 				return problem("invalid_grant", "revoke an existing MCP connection before adding another")
 			}
-			grant = model.MCPOAuthGrant{UserID: *request.UserID, ClientID: client.ID, ClientName: request.ClientName, Scopes: request.Scopes, Resource: resource, ExpiresAt: time.Now().Add(GrantTTL)}
+			grant = model.MCPOAuthGrant{UserID: *request.UserID, ClientID: client.ID, ClientName: request.ClientName, Scopes: request.Scopes, Resource: resource, ExpiresAt: pkg.NowUTC().Add(GrantTTL)}
 			if err := tx.Create(&grant).Error; err != nil {
 				return err
 			}
@@ -121,13 +122,13 @@ func (s *Service) Exchange(params url.Values) (*TokenResponse, error) {
 				return problem("invalid_grant", "invalid refresh token binding")
 			}
 			if token.ConsumedAt != nil {
-				if err := tx.Model(&model.MCPOAuthGrant{}).Where("id = ?", grant.ID).Update("revoked_at", time.Now()).Error; err != nil {
+				if err := tx.Model(&model.MCPOAuthGrant{}).Where("id = ?", grant.ID).Update("revoked_at", pkg.NowUTC()).Error; err != nil {
 					return err
 				}
 				protocolErr = problem("invalid_grant", "refresh token replay revoked this authorization")
 				return nil
 			}
-			if grant.RevokedAt != nil || time.Now().After(grant.ExpiresAt) || time.Now().After(token.ExpiresAt) {
+			if grant.RevokedAt != nil || pkg.NowUTC().After(grant.ExpiresAt) || pkg.NowUTC().After(token.ExpiresAt) {
 				return problem("invalid_grant", "refresh token expired or revoked")
 			}
 			if err := active(tx, grant.UserID); err != nil {
@@ -148,12 +149,12 @@ func (s *Service) Exchange(params url.Values) (*TokenResponse, error) {
 					return err
 				}
 			}
-			claim := tx.Model(&model.MCPOAuthToken{}).Where("hash = ? AND consumed_at IS NULL", token.Hash).Update("consumed_at", time.Now())
+			claim := tx.Model(&model.MCPOAuthToken{}).Where("hash = ? AND consumed_at IS NULL", token.Hash).Update("consumed_at", pkg.NowUTC())
 			if claim.Error != nil {
 				return claim.Error
 			}
 			if claim.RowsAffected != 1 {
-				if err := tx.Model(&model.MCPOAuthGrant{}).Where("id = ?", grant.ID).Update("revoked_at", time.Now()).Error; err != nil {
+				if err := tx.Model(&model.MCPOAuthGrant{}).Where("id = ?", grant.ID).Update("revoked_at", pkg.NowUTC()).Error; err != nil {
 					return err
 				}
 				protocolErr = problem("invalid_grant", "refresh token was already used")
@@ -179,7 +180,7 @@ func (s *Service) revokeCodeGrant(requestID string) error {
 	// Read the association afresh: a competing exchange can attach its grant
 	// after this transaction reads the code but before conditional consumption.
 	grantIDs := s.db.Model(&model.MCPOAuthRequest{}).Select("grant_id").Where("id = ? AND consumed_at IS NOT NULL", requestID)
-	return s.db.Model(&model.MCPOAuthGrant{}).Where("id IN (?)", grantIDs).Update("revoked_at", time.Now()).Error
+	return s.db.Model(&model.MCPOAuthGrant{}).Where("id IN (?)", grantIDs).Update("revoked_at", pkg.NowUTC()).Error
 }
 
 func (s *Service) issue(grant model.MCPOAuthGrant) (*TokenResponse, error) {
@@ -193,7 +194,7 @@ func (s *Service) issue(grant model.MCPOAuthGrant) (*TokenResponse, error) {
 	}
 	access := "sdx_mcpa_" + a
 	refresh := "sdx_mcpr_" + r
-	expiration := time.Now().Add(AccessTTL)
+	expiration := pkg.NowUTC().Add(AccessTTL)
 	if grant.ExpiresAt.Before(expiration) {
 		expiration = grant.ExpiresAt
 	}
@@ -216,17 +217,17 @@ func (s *Service) ValidateToken(raw string) (*Principal, error) {
 		return nil, err
 	}
 	var token model.MCPOAuthToken
-	if err := s.db.Where("hash = ? AND kind = ? AND expires_at > ?", hash(raw), "access", time.Now()).Take(&token).Error; err != nil {
+	if err := s.db.Where("hash = ? AND kind = ? AND expires_at > ?", hash(raw), "access", pkg.NowUTC()).Take(&token).Error; err != nil {
 		return nil, problem("invalid_token", "MCP access token expired or invalid")
 	}
 	var grant model.MCPOAuthGrant
-	if err := s.db.Where("id = ? AND resource = ? AND revoked_at IS NULL AND expires_at > ?", token.GrantID, resource, time.Now()).Take(&grant).Error; err != nil {
+	if err := s.db.Where("id = ? AND resource = ? AND revoked_at IS NULL AND expires_at > ?", token.GrantID, resource, pkg.NowUTC()).Take(&grant).Error; err != nil {
 		return nil, problem("invalid_token", "MCP authorization expired or revoked")
 	}
 	if err := active(s.db, grant.UserID); err != nil {
 		return nil, problem("invalid_token", "account is unavailable")
 	}
-	now := time.Now()
+	now := pkg.NowUTC()
 	if err := s.db.Model(&model.MCPOAuthGrant{}).Where("id = ? AND (last_used_at IS NULL OR last_used_at < ?)", grant.ID, now.Add(-time.Minute)).Update("last_used_at", now).Error; err != nil {
 		return nil, err
 	}
@@ -243,5 +244,5 @@ func (s *Service) RevokeToken(raw, clientID string) error {
 		}
 		return err
 	}
-	return s.db.Model(&model.MCPOAuthGrant{}).Where("id = ? AND client_id = ?", token.GrantID, clientID).Update("revoked_at", time.Now()).Error
+	return s.db.Model(&model.MCPOAuthGrant{}).Where("id = ? AND client_id = ?", token.GrantID, clientID).Update("revoked_at", pkg.NowUTC()).Error
 }

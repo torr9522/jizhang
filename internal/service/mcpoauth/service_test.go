@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/kasuha07/subdux/internal/model"
+	"github.com/kasuha07/subdux/internal/pkg"
 	"github.com/kasuha07/subdux/internal/service/servicetest"
 	"golang.org/x/oauth2"
 	"gorm.io/gorm"
@@ -148,7 +149,7 @@ func TestTokenAndUserBoundaries(t *testing.T) {
 			}
 			switch test {
 			case "expiry":
-				if err := s.db.Model(&model.MCPOAuthToken{}).Where("hash = ?", hash(token.AccessToken)).Update("expires_at", time.Now().Add(-time.Minute)).Error; err != nil {
+				if err := s.db.Model(&model.MCPOAuthToken{}).Where("hash = ?", hash(token.AccessToken)).Update("expires_at", pkg.NowUTC().Add(-time.Minute)).Error; err != nil {
 					t.Fatal(err)
 				}
 			case "disable":
@@ -201,7 +202,7 @@ func TestRejectedCodeExchangeDoesNotConsumeCode(t *testing.T) {
 			s, user, client := setup(t)
 			params, handle := authorize(t, s, user, client, true)
 			if reason == "expired" {
-				if err := s.db.Model(&model.MCPOAuthRequest{}).Where("id = ?", hash(handle)).Update("expires_at", time.Now().Add(-time.Minute)).Error; err != nil {
+				if err := s.db.Model(&model.MCPOAuthRequest{}).Where("id = ?", hash(handle)).Update("expires_at", pkg.NowUTC().Add(-time.Minute)).Error; err != nil {
 					t.Fatal(err)
 				}
 			} else {
@@ -226,7 +227,7 @@ func seedOAuthTestGrants(t *testing.T, db *gorm.DB, userID uint, client *ClientM
 	grants := make([]model.MCPOAuthGrant, count)
 	for i := range grants {
 		grants[i] = model.MCPOAuthGrant{UserID: userID, ClientID: client.ClientID, ClientName: client.ClientName,
-			Scopes: "read", Resource: "https://subdux.example/mcp", ExpiresAt: time.Now().Add(time.Hour)}
+			Scopes: "read", Resource: "https://subdux.example/mcp", ExpiresAt: pkg.NowUTC().Add(time.Hour)}
 	}
 	if err := db.Create(&grants).Error; err != nil {
 		t.Fatal(err)

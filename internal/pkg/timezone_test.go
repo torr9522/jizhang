@@ -15,6 +15,27 @@ func TestGetSystemTimezone(t *testing.T) {
 
 }
 
+func TestSetSystemTimezoneForTestRestoresPreviousOverride(t *testing.T) {
+	tokyo, err := time.LoadLocation("Asia/Tokyo")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	restoreUTC := SetSystemTimezoneForTest(time.UTC)
+	if got := GetSystemTimezone(); got != time.UTC {
+		t.Fatalf("UTC override = %v, want UTC", got)
+	}
+	restoreTokyo := SetSystemTimezoneForTest(tokyo)
+	if got := GetSystemTimezone(); got != tokyo {
+		t.Fatalf("nested override = %v, want %v", got, tokyo)
+	}
+	restoreTokyo()
+	if got := GetSystemTimezone(); got != time.UTC {
+		t.Fatalf("restored nested override = %v, want UTC", got)
+	}
+	restoreUTC()
+}
+
 func TestNormalizeDateInTimezone(t *testing.T) {
 	tokyo, _ := time.LoadLocation("Asia/Tokyo")
 	utc := time.UTC

@@ -4,9 +4,9 @@ import (
 	"errors"
 	"sync"
 	"testing"
-	"time"
 
 	"github.com/kasuha07/subdux/internal/model"
+	"github.com/kasuha07/subdux/internal/pkg"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
@@ -82,7 +82,7 @@ func TestConsumeVerificationCodeSingleConsumeUnderConcurrency(t *testing.T) {
 		Email:     "single-consume@example.com",
 		Purpose:   verificationPurposePasswordReset,
 		CodeHash:  string(hash),
-		ExpiresAt: time.Now().Add(verificationCodeTTL),
+		ExpiresAt: pkg.NowUTC().Add(verificationCodeTTL),
 	}
 	if err := s.DB.Create(&verification).Error; err != nil {
 		t.Fatalf("seed verification code: %v", err)
@@ -142,7 +142,7 @@ func TestConsumeVerificationCodeFailureCountingUnderConcurrency(t *testing.T) {
 		Email:     "failure-count@example.com",
 		Purpose:   verificationPurposePasswordReset,
 		CodeHash:  string(hash),
-		ExpiresAt: time.Now().Add(verificationCodeTTL),
+		ExpiresAt: pkg.NowUTC().Add(verificationCodeTTL),
 	}
 	if err := s.DB.Create(&verification).Error; err != nil {
 		t.Fatalf("seed verification code: %v", err)

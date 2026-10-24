@@ -14,6 +14,7 @@ import (
 
 func newTestDB(t *testing.T) *gorm.DB {
 	t.Helper()
+	t.Cleanup(pkg.SetSystemTimezoneForTest(time.UTC))
 
 	dbPath := filepath.Join(t.TempDir(), "subdux-test.db")
 	db, err := gorm.Open(sqlite.Open(dbPath), &gorm.Config{})
@@ -73,6 +74,7 @@ func mustDate(t *testing.T, value string) time.Time {
 
 func setNotificationLifecycleTestNow(t *testing.T) time.Time {
 	t.Helper()
+	t.Cleanup(pkg.SetSystemTimezoneForTest(time.UTC))
 	now := mustDate(t, "2026-03-15")
 	restoreClock := pkg.SetNowForTest(now)
 	t.Cleanup(restoreClock)

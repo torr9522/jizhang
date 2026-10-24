@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/kasuha07/subdux/internal/model"
-	"github.com/kasuha07/subdux/internal/pkg"
 	"github.com/kasuha07/subdux/internal/service/serviceerr"
 	"gorm.io/gorm"
 )
@@ -269,7 +268,7 @@ func TestBatchUpdatePaymentMethod(t *testing.T) {
 }
 
 func TestBatchMarkRenewedAdvancesManualRenewSubscriptions(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-04-01"))
+	restoreClock := setNowForTestDate(t, "2026-04-01")
 	t.Cleanup(restoreClock)
 
 	service, user, _ := newBatchTestService(t)
@@ -311,7 +310,7 @@ func TestBatchMarkRenewedAdvancesManualRenewSubscriptions(t *testing.T) {
 }
 
 func TestBatchMarkRenewedReportsPerItemFailures(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-04-01"))
+	restoreClock := setNowForTestDate(t, "2026-04-01")
 	t.Cleanup(restoreClock)
 
 	service, user, _ := newBatchTestService(t)

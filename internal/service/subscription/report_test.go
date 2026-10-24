@@ -11,7 +11,7 @@ import (
 )
 
 func TestGetAnalyticsReportAggregatesSubscriptionSpend(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -109,7 +109,7 @@ func TestGetAnalyticsReportAggregatesSubscriptionSpend(t *testing.T) {
 }
 
 func TestGetAnalyticsReportAllowsLargeAggregateAndAnnualizedValues(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -155,7 +155,7 @@ func TestGetAnalyticsReportAllowsLargeAggregateAndAnnualizedValues(t *testing.T)
 }
 
 func TestGetAnalyticsReportExcludesCancelAtPeriodEndFromSpendAndForecast(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -237,7 +237,7 @@ func TestGetAnalyticsReportExcludesCancelAtPeriodEndFromSpendAndForecast(t *test
 }
 
 func TestSubscriptionEventsTrackChangesForAnalytics(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -297,7 +297,7 @@ func TestSubscriptionEventsTrackChangesForAnalytics(t *testing.T) {
 }
 
 func TestGetAnalyticsReportIncludesHistoryInsights(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-20"))
+	restoreClock := setNowForTestDate(t, "2026-03-20")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -322,7 +322,7 @@ func TestGetAnalyticsReportIncludesHistoryInsights(t *testing.T) {
 	}
 
 	restoreClock()
-	restoreClock = pkg.SetNowForTest(mustDate(t, "2026-03-22"))
+	restoreClock = setNowForTestDate(t, "2026-03-22")
 	t.Cleanup(restoreClock)
 
 	updatedAmount := 12.0
@@ -361,7 +361,7 @@ func TestGetAnalyticsReportIncludesHistoryInsights(t *testing.T) {
 }
 
 func TestReportPriceIncreasesSkipsCrossCurrencyEventWithoutConverter(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -478,7 +478,7 @@ func TestAnnualGrowthBaselineDoesNotCrossCurrencyEpoch(t *testing.T) {
 }
 
 func TestReportPriceIncreasesSuppressesOlderIncreaseAfterLatestReduction(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -527,7 +527,7 @@ func TestReportPriceIncreasesSuppressesOlderIncreaseAfterLatestReduction(t *test
 }
 
 func TestGetAnalyticsReportAnnualGrowthIgnoresCreationAndOldEvents(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-20"))
+	restoreClock := setNowForTestDate(t, "2026-03-20")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -608,7 +608,7 @@ func TestGetAnalyticsReportAnnualGrowthIgnoresCreationAndOldEvents(t *testing.T)
 }
 
 func TestGetAnalyticsReportAnnualGrowthExcludesCancelAtPeriodEnd(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-20"))
+	restoreClock := setNowForTestDate(t, "2026-03-20")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)

@@ -6,11 +6,10 @@ import (
 	"time"
 
 	"github.com/kasuha07/subdux/internal/model"
-	"github.com/kasuha07/subdux/internal/pkg"
 )
 
 func TestGetSubscriptionDetailAggregatesHistoryLogsAndUpcomingCharges(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -98,7 +97,7 @@ func TestGetSubscriptionDetailAggregatesHistoryLogsAndUpcomingCharges(t *testing
 }
 
 func TestGetSubscriptionDetailLimitsManualRenewToCurrentCharge(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -139,7 +138,7 @@ func TestGetSubscriptionDetailLimitsManualRenewToCurrentCharge(t *testing.T) {
 }
 
 func TestGetSubscriptionDetailExcludesCancelAtPeriodEndUpcomingCharges(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -180,7 +179,7 @@ func TestGetSubscriptionDetailExcludesCancelAtPeriodEndUpcomingCharges(t *testin
 }
 
 func TestGetSubscriptionDetailPriceHistoryIsNotLimitedByTimeline(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)

@@ -4,7 +4,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/kasuha07/subdux/internal/pkg"
 	subscriptionservice "github.com/kasuha07/subdux/internal/service/subscription"
 )
 
@@ -29,7 +28,7 @@ func createPendingPriceCalendarSubscription(t *testing.T, service *subscriptions
 }
 
 func TestGenerateICalFeedSplitsSeriesAtScheduledPrice(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -58,7 +57,7 @@ func TestGenerateICalFeedSplitsSeriesAtScheduledPrice(t *testing.T) {
 }
 
 func TestGenerateICalFeedTrialStartsAtScheduledPrice(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -81,7 +80,7 @@ func TestGenerateICalFeedTrialStartsAtScheduledPrice(t *testing.T) {
 }
 
 func TestGenerateICalFeedKeepsBillingScheduleAfterPriceSwitch(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 	for _, tt := range []struct {
 		name        string

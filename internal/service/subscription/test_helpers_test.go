@@ -3,14 +3,17 @@ package subscription
 import (
 	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/glebarez/sqlite"
 	"github.com/kasuha07/subdux/internal/model"
+	"github.com/kasuha07/subdux/internal/pkg"
 	"gorm.io/gorm"
 )
 
 func newTestDB(t *testing.T) *gorm.DB {
 	t.Helper()
+	t.Cleanup(pkg.SetSystemTimezoneForTest(time.UTC))
 
 	dbPath := filepath.Join(t.TempDir(), "subdux-test.db")
 	db, err := gorm.Open(sqlite.Open(dbPath), &gorm.Config{})

@@ -24,7 +24,7 @@ func TestRestoreRefreshesMountedJWTMiddleware(t *testing.T) {
 			if fixed {
 				t.Setenv("JWT_SECRET", strings.Repeat("f", 32))
 			}
-			replacementDir := t.TempDir()
+			replacementDir, liveDir := privilegeDropTestDirs(t)
 			t.Setenv("DATA_PATH", replacementDir)
 			replacement := pkg.InitDB()
 			user := model.User{Username: "restore-admin", Email: "restore@example.com", Password: "unused", Role: "admin", Status: "active"}
@@ -42,7 +42,7 @@ func TestRestoreRefreshesMountedJWTMiddleware(t *testing.T) {
 				t.Fatal(err)
 			}
 
-			t.Setenv("DATA_PATH", t.TempDir())
+			t.Setenv("DATA_PATH", liveDir)
 			db := pkg.InitDB()
 			t.Cleanup(func() { sqlDB, _ := db.DB(); _ = sqlDB.Close() })
 			if err := db.Create(&user).Error; err != nil {

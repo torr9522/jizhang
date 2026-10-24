@@ -7,14 +7,23 @@ import (
 )
 
 var (
-	systemTimezone     *time.Location
-	systemTimezoneOnce sync.Once
+	systemTimezone         *time.Location
+	systemTimezoneOverride *time.Location
+	systemTimezoneMu       sync.RWMutex
+	systemTimezoneOnce     sync.Once
 )
 
 // GetSystemTimezone returns the system's default timezone.
 // Priority: TZ environment variable > system local timezone.
 // Result is cached after first call.
 func GetSystemTimezone() *time.Location {
+	systemTimezoneMu.RLock()
+	override := systemTimezoneOverride
+	systemTimezoneMu.RUnlock()
+	if override != nil {
+		return override
+	}
+
 	systemTimezoneOnce.Do(func() {
 		// Try TZ environment variable first (Docker/container support)
 		if tzEnv := os.Getenv("TZ"); tzEnv != "" {
@@ -28,6 +37,26 @@ func GetSystemTimezone() *time.Location {
 		systemTimezone = time.Local
 	})
 	return systemTimezone
+}
+
+// SetSystemTimezoneForTest overrides the process timezone until the returned
+// restore function is called. Date-sensitive tests should pair this with a
+// fixed clock so their calendar-day expectations do not depend on the host.
+func SetSystemTimezoneForTest(loc *time.Location) func() {
+	if loc == nil {
+		loc = time.UTC
+	}
+
+	systemTimezoneMu.Lock()
+	previous := systemTimezoneOverride
+	systemTimezoneOverride = loc
+	systemTimezoneMu.Unlock()
+
+	return func() {
+		systemTimezoneMu.Lock()
+		systemTimezoneOverride = previous
+		systemTimezoneMu.Unlock()
+	}
 }
 
 // GetSystemTimezoneName returns the IANA timezone name (e.g., "Asia/Shanghai", "UTC").

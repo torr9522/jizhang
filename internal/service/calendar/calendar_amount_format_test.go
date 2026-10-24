@@ -7,13 +7,12 @@ import (
 	"testing"
 
 	"github.com/kasuha07/subdux/internal/model"
-	"github.com/kasuha07/subdux/internal/pkg"
 	"github.com/kasuha07/subdux/internal/service/money"
 	subscriptionservice "github.com/kasuha07/subdux/internal/service/subscription"
 )
 
 func TestGenerateICalFeedFormatsAmountWithCurrencyMinorUnit(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -63,7 +62,7 @@ func TestGenerateICalFeedFormatsAmountWithCurrencyMinorUnit(t *testing.T) {
 }
 
 func TestGenerateICalFeedRejectsUnsafeAmount(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)

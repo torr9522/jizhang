@@ -2,8 +2,6 @@ package subscription
 
 import (
 	"testing"
-
-	"github.com/kasuha07/subdux/internal/pkg"
 )
 
 // newCurrencySwitchSubscription creates a 7.00 USD/month subscription, the
@@ -47,7 +45,7 @@ func switchToYen(t *testing.T, service *Service, userID, subscriptionID uint) {
 }
 
 func TestActionCenterIgnoresCurrencySwitchAsPriceChange(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
@@ -70,7 +68,7 @@ func TestActionCenterIgnoresCurrencySwitchAsPriceChange(t *testing.T) {
 }
 
 func TestActionCenterCurrencySwitchSuppressesOlderPriceIncrease(t *testing.T) {
-	restoreClock := pkg.SetNowForTest(mustDate(t, "2026-03-01"))
+	restoreClock := setNowForTestDate(t, "2026-03-01")
 	t.Cleanup(restoreClock)
 
 	db := newTestDB(t)
